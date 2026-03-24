@@ -1,0 +1,68 @@
+# Visual Studio / .NET gitignore
+
+# Build folders
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.vcxproj.user
+*.userprefs
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+.nuget/
+
+# Publish output
+publish/
+*.Publish.xml
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper*/
+
+# Test results
+TestResults/
+
+# Build artifacts
+*.ilk
+*.pdb
+*.cache
+*.log
+*.obj
+*.o
+*.dll
+*.exe
+
+# IIS Express
+IISExpress/
+
+# User-specific files
+*.rsuser
+*.user
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Other
+*.vsix
+
+# Keep project content files (like recipes.json) under source control unless intentionally excluded.

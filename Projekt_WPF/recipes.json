@@ -1,0 +1,40 @@
+{
+  "recipes": [
+    {
+      "id": 1,
+      "title": "Glowing Green Smoothie",
+      "kcal": 450,
+      "time_min": 25,
+      "short_description": "A hormone-balancing smoothie rich in fiber and antioxidants.",
+      "description": "A nutrient-dense smoothie designed to support skin health and hormonal balance using fresh greens and healthy fats.",
+      "image_path": "C:\\Users\\danie\\OneDrive\\Pulpit\\Programowanie IV\\Projekt_WPF\\Projekt_WPF\\images\\berry_smothie.jpg",
+      "ingredients": "Spinach;Avocado;Banana;Almond Milk;Chia Seeds",
+      "key_ingredients": "Spinach;Avocado",
+      "steps": "Add all ingredients to blender|Blend until smooth|Serve chilled"
+    },
+    {
+      "id": 2,
+      "title": "Berry Power Oatmeal",
+      "kcal": 380,
+      "time_min": 15,
+      "short_description": "Hearty oats topped with fresh berries and nuts.",
+      "description": "Slow-release carbohydrates from oats combined with antioxidant-rich berries for a perfect morning energy boost.",
+      "image_path": "C:\\Users\\danie\\OneDrive\\Pulpit\\Programowanie IV\\Projekt_WPF\\Projekt_WPF\\images\\oatmeal.jpg",
+      "ingredients": "Rolled Oats;Blueberries;Raspberries;Walnuts;Honey;Water",
+      "key_ingredients": "Oats;Blueberries",
+      "steps": "Boil water and add oats|Simmer for 5-10 minutes|Top with berries, nuts and honey"
+    },
+    {
+      "id": 3,
+      "title": "Quinoa Summer Salad",
+      "kcal": 520,
+      "time_min": 30,
+      "short_description": "Fresh and light quinoa salad with Mediterranean veggies.",
+      "description": "A protein-packed salad featuring fluffy quinoa, crunchy cucumbers, and a zesty lemon dressing.",
+      "image_path": "C:\\Users\\danie\\OneDrive\\Pulpit\\Programowanie IV\\Projekt_WPF\\Projekt_WPF\\images\\quinoa_salad.jpg",
+      "ingredients": "Quinoa;Cucumber;Cherry Tomatoes;Feta Cheese;Olive Oil;Lemon Juice",
+      "key_ingredients": "Quinoa;Feta",
+      "steps": "Cook quinoa according to package|Chop vegetables and mix with cooled quinoa|Add dressing and feta"
+    }
+  ]
+}
