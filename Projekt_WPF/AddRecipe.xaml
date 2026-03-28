@@ -1,212 +1,92 @@
 ﻿<Window x:Class="Projekt_WPF.AddRecipeWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Add Recipe"
-        Height="700"
-        Width="900"
-        Background="#F6EDEE">
+        Title="Add Recipe" Height="820" Width="900" Background="#F6EDEE">
     <Window.Resources>
-
         <Style x:Key="ChipButton" TargetType="Button">
             <Setter Property="Padding" Value="14,6"/>
             <Setter Property="Margin" Value="6,0"/>
             <Setter Property="Background" Value="#EFE6E6"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="#555"/>
-            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="bd"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="20">
-                            <ContentPresenter
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Margin="6,0"/>
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6,0"/>
                         </Border>
-
-                        <ControlTemplate.Triggers>
-
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="#E3D7D7"/>
-                            </Trigger>
-
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="#D7CACA"/>
-                            </Trigger>
-
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
-
-        <Style x:Key="ChipActive" BasedOn="{StaticResource ChipButton}" TargetType="Button">
-            <Setter Property="Background" Value="#FF4F6F"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-
-
-        <Style x:Key="RecipeCard" TargetType="Border">
-            <Setter Property="Width" Value="330"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="CornerRadius" Value="15"/>
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="12"
-                                      ShadowDepth="3"
-                                      Opacity="0.15"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
     </Window.Resources>
+
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-
         <Grid Margin="40">
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0 0 0 30">
-                <TextBlock
-                    Text="Add a New Recipe"
-                    FontSize="34"
-                    FontWeight="Bold"
-                    Foreground="#5A0F1D"
-                    HorizontalAlignment="Center"/>
-
-                <TextBlock
-                    Text="Share your hormone-balancing creations."
-                    FontSize="14"
-                    Foreground="#7A7A7A"
-                    HorizontalAlignment="Center"/>
+                <TextBlock Text="Add a New Recipe" FontSize="34" FontWeight="Bold" Foreground="#5A0F1D" HorizontalAlignment="Center"/>
+                <TextBlock Text="Drag a photo and fill in the details below." FontSize="14" Foreground="#7A7A7A" HorizontalAlignment="Center"/>
             </StackPanel>
 
-            <Border Grid.Row="1"
-                    Background="White"
-                    CornerRadius="20"
-                    Padding="30">
-
+            <Border Grid.Row="1" Background="White" CornerRadius="20" Padding="30">
                 <Border.Effect>
-                    <DropShadowEffect BlurRadius="15"
-                                      ShadowDepth="3"
-                                      Opacity="0.25"/>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="3" Opacity="0.25"/>
                 </Border.Effect>
-
                 <Grid>
-
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin="0 0 20 0">
-
-                        <TextBlock
-                            Text="Dish Photo"
-                            FontWeight="Bold"
-                            FontSize="18"
-                            Foreground="#7C1A2B"
-                            Margin="0 0 0 10"/>
-
-                        <Border Height="180"
-                                BorderBrush="#F2B6BE"
-                                BorderThickness="2"
-                                CornerRadius="12"
-                                Background="#FFF7F8"
-                                Margin="0 0 0 25">
-
+                        <TextBlock Text="Dish Photo" FontWeight="Bold" FontSize="18" Foreground="#7C1A2B" Margin="0 0 0 10"/>
+                        <Border x:Name="ImageDropZone" Height="180" BorderBrush="#F2B6BE" BorderThickness="2" CornerRadius="12" Background="#FFF7F8" Margin="0 0 0 25" AllowDrop="True" Drop="ImageDropZone_Drop">
                             <Grid>
-                                <TextBlock
-                                    Text="Click to upload a photo"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Foreground="#E26A78"/>
+                                <Image x:Name="ImgPreview" Stretch="UniformToFill" Margin="2"/>
+                                <TextBlock x:Name="DropText" Text="Drag &amp; Drop photo here" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#E26A78"/>
                             </Grid>
-
                         </Border>
 
-                        <TextBlock
-                            Text="Recipe Title"
-                            FontWeight="SemiBold"/>
+                        <TextBlock Text="Recipe Title" FontWeight="SemiBold"/>
+                        <TextBox x:Name="TitleInput" Height="35" Margin="0 8 0 15" Padding="8" Background="#FFF7F8" BorderBrush="#F2B6BE"/>
 
-                        <TextBox Height="35"
-                                 Margin="0 8 0 20"
-                                 Padding="8"
-                                 Background="#FFF7F8"
-                                 BorderBrush="#F2B6BE"/>
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 15">
+                            <StackPanel Width="150" Margin="0 0 20 0">
+                                <TextBlock Text="Calories (kcal)" FontWeight="SemiBold"/>
+                                <TextBox x:Name="KcalInput" Height="35" Margin="0 8 0 0" Padding="8" Background="#FFF7F8" BorderBrush="#F2B6BE"/>
+                            </StackPanel>
+                            <StackPanel Width="150">
+                                <TextBlock Text="Time (min)" FontWeight="SemiBold"/>
+                                <TextBox x:Name="TimeInput" Height="35" Margin="0 8 0 0" Padding="8" Background="#FFF7F8" BorderBrush="#F2B6BE"/>
+                            </StackPanel>
+                        </StackPanel>
 
-                        <TextBlock
-                            Text="Description"
-                            FontWeight="SemiBold"/>
+                        <TextBlock Text="Short Description" FontWeight="SemiBold"/>
+                        <TextBox x:Name="ShortDescInput" Height="35" Margin="0 8 0 15" Padding="8" Background="#FFF7F8" BorderBrush="#F2B6BE"/>
 
-                        <TextBox Height="80"
-                                 Margin="0 8 0 0"
-                                 Padding="8"
-                                 Background="#FFF7F8"
-                                 BorderBrush="#F2B6BE"
-                                 AcceptsReturn="True"/>
-
+                        <TextBlock Text="Key Ingredients / Hormone Heroes (separate with ; )" FontWeight="SemiBold"/>
+                        <TextBox x:Name="KeyIngredientsInput" Height="35" Margin="0 8 0 15" Padding="8" Background="#FFF7F8" BorderBrush="#F2B6BE"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="1" Grid.Row="5">
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Full Description / Why it helps" FontWeight="SemiBold"/>
+                        <TextBox x:Name="DescriptionInput" Height="80" Margin="0 8 0 15" Padding="8" Background="#FFF7F8" BorderBrush="#F2B6BE" AcceptsReturn="True" TextWrapping="Wrap"/>
 
-                        <TextBlock
-                            Text="Key Ingredients"
-                            FontWeight="Bold"
-                            FontSize="18"
-                            Foreground="#7C1A2B"
-                            Margin="0 0 0 10"/>
+                        <TextBlock Text="Ingredients (separate with ; )" FontWeight="SemiBold"/>
+                        <TextBox x:Name="IngredientsInput" Height="100" Margin="0 8 0 15" Padding="8" Background="#FFF7F8" BorderBrush="#F2B6BE" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
 
-                        <ScrollViewer MaxHeight="200" Width="380" VerticalScrollBarVisibility="Auto">
-                            <WrapPanel Orientation="Horizontal" Margin="10,0,0,0">
-                                <Button Content="Salmon" Style="{StaticResource ChipActive}" Padding="20, 10" Margin="5"/>
-                                <Button Content="Avocado" Style="{StaticResource ChipButton}" Padding="20, 10" Margin="5"/>
-                                <Button Content="Olive Oil" Style="{StaticResource ChipButton}" Padding="20, 10" Margin="5"/>
-                                <Button Content="Egg" Style="{StaticResource ChipButton}" Padding="20, 10" Margin="5"/>
-                                <Button Content="Walnuts" Style="{StaticResource ChipButton}" Padding="20, 10" Margin="5"/>
-                                <Button Content="Berries" Style="{StaticResource ChipButton}" Padding="20, 10" Margin="5"/>
-                                <Button Content="Seeds" Style="{StaticResource ChipButton}" Padding="20, 10" Margin="5"/>
-                            </WrapPanel>
-                        </ScrollViewer>
+                        <TextBlock Text="Steps (separate with | )" FontWeight="SemiBold"/>
+                        <TextBox x:Name="StepsInput" Height="100" Margin="0 8 0 15" Padding="8" Background="#FFF7F8" BorderBrush="#F2B6BE" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
 
-                        <TextBlock
-                            Text="Full Ingredients List"
-                            FontWeight="SemiBold"
-                            Margin="0 15 0 8"/>
-
-                        <TextBox Height="100"
-                             Padding="8"
-                             Background="#FFF7F8"
-                             BorderBrush="#F2B6BE"
-                             AcceptsReturn="True"
-                             VerticalScrollBarVisibility="Auto"
-                             TextWrapping="Wrap"/>
-                        <Button
-                            Content="Save Recipe"
-                            Height="45"
-                            Margin="0 20 0 0" 
-                            Background="#E85D75"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            BorderThickness="0"
-                            Cursor="Hand"/>
-
+                        <Button x:Name="BtnSave" Content="Save Recipe" Click="BtnSave_Click" Height="45" Margin="0 10 0 0" Background="#E85D75" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand"/>
                     </StackPanel>
-
                 </Grid>
-
             </Border>
-
         </Grid>
-
     </ScrollViewer>
-
 </Window>

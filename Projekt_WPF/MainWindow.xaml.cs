@@ -146,5 +146,33 @@ namespace Projekt_WPF
                 listBox.SelectedItem = null;
             }
         }
+        // MainWindow.xaml.cs
+
+        private void BrowseRecipes_Click(object sender, RoutedEventArgs e)
+        {
+            Recipes.Clear();
+
+            var updatedRecipes = RecipeService.LoadRecipes();
+            foreach (var recipe in updatedRecipes)
+            {
+                Recipes.Add(recipe);
+            }
+
+            if (SearchTextBox != null)
+            {
+                SearchTextBox.Text = "Search by ingredient or dish...";
+                SearchTextBox.Foreground = Brushes.Gray;
+            }
+
+            BtnAll.IsChecked = true;
+            BtnProteins.IsChecked = false;
+            BtnFats.IsChecked = false;
+            BtnGreens.IsChecked = false;
+            BtnFruits.IsChecked = false;
+
+            _recipesView?.Refresh();
+
+            MessageBox.Show("List updated!", "Refresh", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }

@@ -67,7 +67,13 @@
                     <TextBlock Text="Hormone Harmony" FontSize="22" FontWeight="Bold" Foreground="#5A1E1E"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <Button Content="Browse Recipes" Background="Transparent" BorderThickness="0" FontWeight="SemiBold" Margin="0,0,20,0"/>
+                    <Button Content="Browse Recipes"
+                            Click="BrowseRecipes_Click"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            FontWeight="SemiBold"
+                            Margin="0,0,20,0"
+                            Cursor="Hand"/>
                     <Button Content="+ Add Recipe" Click="AddRecipe_Click" Padding="14,6" Background="#E7DADA" BorderThickness="0" Cursor="Hand"/>
                 </StackPanel>
             </Grid>
@@ -129,10 +135,11 @@
                 </Grid>
 
                 <ListBox ItemsSource="{Binding Recipes}" 
-                         Background="Transparent" 
-                         BorderThickness="0"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         MouseDoubleClick="RecipesListBox_MouseDoubleClick">
+                     Background="Transparent" 
+                     BorderThickness="0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.CanContentScroll="False" 
+                     MouseDoubleClick="RecipesListBox_MouseDoubleClick">
 
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>

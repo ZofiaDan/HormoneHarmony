@@ -21,6 +21,7 @@ namespace Projekt_WPF
             InitializeComponent();
             this.DataContext = selectedRecipe;
         }
+
         private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             this.Close();
