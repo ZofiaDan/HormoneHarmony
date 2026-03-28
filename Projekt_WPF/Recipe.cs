@@ -28,7 +28,6 @@ namespace Projekt_WPF
         [JsonPropertyName("image_path")]
         public string ImagePath { get; set; }
 
-        // Pola "Raw" przechowują dane w formacie tekstowym (pod SQLite/JSON)
         [JsonPropertyName("ingredients")]
         public string IngredientsRaw { get; set; }
 
@@ -38,8 +37,7 @@ namespace Projekt_WPF
         [JsonPropertyName("steps")]
         public string StepsRaw { get; set; }
 
-        // Właściwości pomocnicze, które zamieniają tekst na listy dla WPF
-        [JsonIgnore] // Deserializator zignoruje te pola, bo bazujemy na "Raw"
+        [JsonIgnore] 
         public List<string> Ingredients => IngredientsRaw?.Split(';').ToList() ?? new List<string>();
 
         [JsonIgnore]
@@ -48,10 +46,8 @@ namespace Projekt_WPF
         [JsonIgnore]
         public List<string> Steps => StepsRaw?.Split('|').ToList() ?? new List<string>();
 
-        // Konstruktor bezparametrowy wymagany do deserializacji JSON
         public Recipe() { }
 
-        // Opcjonalny konstruktor dla ułatwienia tworzenia obiektów w kodzie
         public Recipe(int id, string title, int kcal, int timeMin, string shortDescription, string description, string imagePath, string ingredientsRaw, string keyIngredientsRaw, string stepsRaw)
         {
             Id = id;

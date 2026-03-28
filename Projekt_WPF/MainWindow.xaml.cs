@@ -39,23 +39,38 @@ namespace Projekt_WPF
         private bool FilterRecipes(object obj)
         {
             if (!(obj is Recipe recipe)) return false;
+
+            string searchText = "";
+
+            if (SearchTextBox != null && !string.IsNullOrWhiteSpace(SearchTextBox.Text) &&
+                SearchTextBox.Text != "Search by ingredient or dish...")
+            {
+                searchText = SearchTextBox.Text;
+            }
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                bool titleMatches = recipe.Title.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                if (!titleMatches) return false;
+            }
+
             if (BtnAll.IsChecked == true) return true;
 
-            //Mapowanie kategorii przycisków na konkretne składniki występujące w JSON
             var categoryMapping = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
-            {
-                { "Greens", new List<string> { "Spinach", "Kale", "Lettuce", "Avocado", "Cucumber", "Broccoli" } },
-                { "Proteins", new List<string> { "Salmon", "Chicken", "Egg", "Tofu", "Beef", "Quinoa" } },
-                { "Healthy Fats", new List<string> { "Avocado", "Olive Oil", "Walnuts", "Chia Seeds", "Almond" } },
-                { "Fruits", new List<string> { "Banana", "Blueberries", "Raspberries", "Lemon", "Apple" } }
-            };
+                {
+                    { "Greens", new List<string> { "Spinach", "Kale", "Lettuce", "Avocado", "Cucumber", "Broccoli" } },
+                    { "Proteins", new List<string> { "Salmon", "Chicken", "Egg", "Tofu", "Beef", "Quinoa" } },
+                    { "Healthy Fats", new List<string> { "Avocado", "Olive Oil", "Walnuts", "Chia Seeds", "Almond" } },
+                    { "Fruits", new List<string> { "Banana", "Blueberries", "Raspberries", "Lemon", "Apple" } }
+                };
+
             var activeFilterNames = new List<string>();
             if (BtnProteins.IsChecked == true) activeFilterNames.Add("Proteins");
             if (BtnFats.IsChecked == true) activeFilterNames.Add("Healthy Fats");
             if (BtnGreens.IsChecked == true) activeFilterNames.Add("Greens");
             if (BtnFruits.IsChecked == true) activeFilterNames.Add("Fruits");
 
-            if (activeFilterNames.Count == 0) return false;
+            if (activeFilterNames.Count == 0) return true;
 
             var keywordsToSearch = new List<string>();
             foreach (var filterName in activeFilterNames)
@@ -65,6 +80,7 @@ namespace Projekt_WPF
                     keywordsToSearch.AddRange(categoryMapping[filterName]);
                 }
             }
+
             string searchPool = $"{recipe.IngredientsRaw} {recipe.KeyIngredientsRaw}";
 
             return keywordsToSearch.Any(word =>
@@ -111,6 +127,10 @@ namespace Projekt_WPF
                 tb.Text = "Search by ingredient or dish...";
                 tb.Foreground = Brushes.Gray;
             }
+        }
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _recipesView?.Refresh();
         }
         private void AddRecipe_Click(object sender, RoutedEventArgs e)
         {

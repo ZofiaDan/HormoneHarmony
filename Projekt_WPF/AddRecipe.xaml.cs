@@ -14,9 +14,7 @@ using System.Windows.Shapes;
 
 namespace Projekt_WPF
 {
-    /// <summary>
-    /// Logika interakcji dla klasy AddRecipe.xaml
-    /// </summary>
+    
     public partial class AddRecipeWindow : Window
     {
         public AddRecipeWindow()
