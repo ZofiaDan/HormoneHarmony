@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-using System.Windows.Controls.Primitives;
 using System.ComponentModel;
+using System.Windows.Data;
+using Microsoft.VisualBasic;
+using System.Windows.Media;          
+using System.Windows.Input;           
+using System.Windows.Controls.Primitives; 
 
 namespace Projekt_WPF
 {
@@ -22,9 +17,12 @@ namespace Projekt_WPF
     {
         public ObservableCollection<Recipe> Recipes { get; } = new ObservableCollection<Recipe>();
         private ICollectionView _recipesView;
+
         public MainWindow()
         {
             InitializeComponent();
+            var settings = ConfigManager.LoadConfig();
+            WelcomeText.Text = $"Hello, {settings.UserName}!";
 
             var recipes = RecipeService.LoadRecipes();
             foreach (var recipe in recipes)
@@ -36,12 +34,22 @@ namespace Projekt_WPF
             _recipesView.Filter = FilterRecipes;
             DataContext = this;
         }
+
+        private void EditName_Click(object sender, RoutedEventArgs e)
+        {
+            string newName = Microsoft.VisualBasic.Interaction.InputBox("Enter your name:", "Personalize", "Girlie");
+            if (!string.IsNullOrWhiteSpace(newName))
+            {
+                WelcomeText.Text = $"Hello, {newName}!";
+                ConfigManager.SaveConfig(newName);
+            }
+        }
+
         private bool FilterRecipes(object obj)
         {
             if (!(obj is Recipe recipe)) return false;
 
             string searchText = "";
-
             if (SearchTextBox != null && !string.IsNullOrWhiteSpace(SearchTextBox.Text) &&
                 SearchTextBox.Text != "Search by ingredient or dish...")
             {
@@ -50,19 +58,18 @@ namespace Projekt_WPF
 
             if (!string.IsNullOrEmpty(searchText))
             {
-                bool titleMatches = recipe.Title.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                if (!titleMatches) return false;
+                if (recipe.Title.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) < 0) return false;
             }
 
             if (BtnAll.IsChecked == true) return true;
 
             var categoryMapping = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
-                {
-                    { "Greens", new List<string> { "Spinach", "Kale", "Lettuce", "Avocado", "Cucumber", "Broccoli" } },
-                    { "Proteins", new List<string> { "Salmon", "Chicken", "Egg", "Tofu", "Beef", "Quinoa" } },
-                    { "Healthy Fats", new List<string> { "Avocado", "Olive Oil", "Walnuts", "Chia Seeds", "Almond" } },
-                    { "Fruits", new List<string> { "Banana", "Blueberries", "Raspberries", "Lemon", "Apple" } }
-                };
+            {
+                { "Greens", new List<string> { "Spinach", "Kale", "Lettuce", "Avocado", "Cucumber", "Broccoli" } },
+                { "Proteins", new List<string> { "Salmon", "Chicken", "Egg", "Tofu", "Beef", "Quinoa" } },
+                { "Healthy Fats", new List<string> { "Avocado", "Olive Oil", "Walnuts", "Chia Seeds", "Almond" } },
+                { "Fruits", new List<string> { "Banana", "Blueberries", "Raspberries", "Lemon", "Apple" } }
+            };
 
             var activeFilterNames = new List<string>();
             if (BtnProteins.IsChecked == true) activeFilterNames.Add("Proteins");
@@ -75,35 +82,26 @@ namespace Projekt_WPF
             var keywordsToSearch = new List<string>();
             foreach (var filterName in activeFilterNames)
             {
-                if (categoryMapping.ContainsKey(filterName))
-                {
-                    keywordsToSearch.AddRange(categoryMapping[filterName]);
-                }
+                if (categoryMapping.ContainsKey(filterName)) keywordsToSearch.AddRange(categoryMapping[filterName]);
             }
 
             string searchPool = $"{recipe.IngredientsRaw} {recipe.KeyIngredientsRaw}";
-
-            return keywordsToSearch.Any(word =>
-                searchPool.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0);
+            return keywordsToSearch.Any(word => searchPool.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0);
         }
+
         private void Filter_Click(object sender, RoutedEventArgs e)
         {
             ToggleButton clickedButton = sender as ToggleButton;
-
             if (clickedButton == BtnAll)
             {
                 if (BtnAll.IsChecked == true)
                 {
-                    BtnProteins.IsChecked = false;
-                    BtnFats.IsChecked = false;
-                    BtnGreens.IsChecked = false;
-                    BtnFruits.IsChecked = false;
+                    BtnProteins.IsChecked = BtnFats.IsChecked = BtnGreens.IsChecked = BtnFruits.IsChecked = false;
                 }
             }
             else
             {
                 BtnAll.IsChecked = false;
-
                 if (BtnProteins.IsChecked == false && BtnFats.IsChecked == false &&
                     BtnGreens.IsChecked == false && BtnFruits.IsChecked == false)
                 {
@@ -112,6 +110,7 @@ namespace Projekt_WPF
             }
             _recipesView.Refresh();
         }
+
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             if (sender is TextBox tb && tb.Text == "Search by ingredient or dish...")
@@ -120,6 +119,7 @@ namespace Projekt_WPF
                 tb.Foreground = Brushes.Black;
             }
         }
+
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (sender is TextBox tb && string.IsNullOrWhiteSpace(tb.Text))
@@ -128,15 +128,18 @@ namespace Projekt_WPF
                 tb.Foreground = Brushes.Gray;
             }
         }
+
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             _recipesView?.Refresh();
         }
+
         private void AddRecipe_Click(object sender, RoutedEventArgs e)
         {
             AddRecipeWindow window = new AddRecipeWindow();
             window.Show();
         }
+
         private void RecipesListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender is ListBox listBox && listBox.SelectedItem is Recipe selectedRecipe)
@@ -146,7 +149,6 @@ namespace Projekt_WPF
                 listBox.SelectedItem = null;
             }
         }
-        // MainWindow.xaml.cs
 
         private void BrowseRecipes_Click(object sender, RoutedEventArgs e)
         {
